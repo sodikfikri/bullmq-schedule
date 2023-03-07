@@ -61,7 +61,6 @@ const EmployeeController = {
     Drain: async function(req, res) {
         let apiResult = {}
         try {
-
             LibQueueHandler.QueueDrain()
 
             apiResult = {...response[200]}

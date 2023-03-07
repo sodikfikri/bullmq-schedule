@@ -77,11 +77,11 @@ const QueueHandler = {
             connection: connection,
             concurrency: 1
         })
-        worker.on('drained', async (job, result) => {
-            console.log(job);
-            console.log(result);
-            console.log('delay');
-        })
+        // worker.on('drained', async (job, result) => {
+        //     console.log(job);
+        //     console.log(result);
+        //     console.log('delay');
+        // })
         worker.on('progress', (job, result) => {
             // console.log(job.id);
             console.log('Event progress');
