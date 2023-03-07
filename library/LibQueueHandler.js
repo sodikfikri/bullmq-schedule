@@ -24,10 +24,11 @@ const QueueHandler = {
                 await QUEUE.add(QueueName, data, {
                     removeOnComplete: false,
                     // delay: 1000 // delay 1 second
-                    // repeat: {
-                    //     pattern: '20 17 01 02 *',
-                    //     // every: 5000,
-                    // }
+                    repeat: {
+                        pattern: '40 11 07 03 *', // -> set time repeat jobs
+                        // every: 5000, // -> running job setiap 5 detik
+                        // limit: 1 // -> berapakali job mau di jalankan
+                    }
                 })
             }
 
@@ -60,7 +61,7 @@ const QueueHandler = {
                     address: val.email,
                     created_at: moment().unix()
                 }
-                console.log(data);
+                // console.log(data);
                 await mysql_helpers.insert('employee', data)
             }
         } catch (error) {
@@ -76,33 +77,41 @@ const QueueHandler = {
             connection: connection,
             concurrency: 1
         })
-        worker.on('delayed', (job, result) => {
-            console.log('Event DELAYED');
+        worker.on('drained', async (job, result) => {
+            console.log(job);
+            console.log(result);
+            console.log('delay');
         })
         worker.on('progress', (job, result) => {
             // console.log(job.id);
             console.log('Event progress');
         })
         worker.on('completed', (job, result) => {
-            // job.remove()
-            job.updateProgress(100);
+            // this.QueueDrain()
+            // job.updateProgress(100);
             console.log('Event complete');
         })
         worker.on('failed', (job, result) => {
             console.log('Event failed');
         })
-        worker.on('waiting', (job, result) => {
-            console.log('Event waiting');
+        worker.on('error', async (job, result) => {
+            console.log('Event Error');
         })
-        worker.on('removed', (job, result) => {
-            console.log('Event removed');
-        })
-        worker.on('stalled', (job, result) => {
-            console.log('Event stalled');
-        })
-        worker.on('cleaned', (job, result) => {
-            console.log('Event cleaned');
-        })
+        // worker.on('waiting', (job, result) => {
+        //     console.log('Event waiting');
+        // })
+        // worker.on('removed', (job, result) => {
+        //     console.log('Event removed');
+        // })
+        // worker.on('stalled', (job, result) => {
+        //     console.log('Event stalled');
+        // })
+        // worker.on('cleaned', (job, result) => {
+        //     console.log('Event cleaned');
+        // })
+    },
+    QueueDrain: function() {
+        this.theQueue.drain()
     }
 }
 

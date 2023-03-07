@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: bull-schedule
+    container_name: bull-schedule
+    restart: unless-stopped
+    working_dir: /var/www/html/services/bull_schedule
+    # before use volume, docker up and docker cp bcng-app-api_berita_indonesia:/app/services/api_berita_indonesia/files_folders files_folders
+    volumes:
+      - .:/var/www/html/services/bull_schedule
+    ports:
+      - "${DOCKER_PORT}:${PORT}"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        nodemon Service.js
+
+networks:
+  default:
+    name: bull-schedule
+    driver: bridge

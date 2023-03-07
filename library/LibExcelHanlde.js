@@ -9,7 +9,7 @@ const LibExcelHandle = {
 
             file.mv(filePath, (err) => {
                 if (err) {
-                  reject(err)
+                    reject(err)
                 } else {
                     resolve(filePath)
                 }
@@ -22,7 +22,7 @@ const LibExcelHandle = {
         const worksheet = workbook.Sheets[sheetName];
         const data = xlsx.utils.sheet_to_json(worksheet);
 
-        fs.unlinkSync(filePath);
+        fs.unlinkSync(filePath); // remove file in folder uploads
 
         return data
     }
