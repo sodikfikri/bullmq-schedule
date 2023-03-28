@@ -29,6 +29,7 @@ const EmployeeModel = {
         return new Promise(async (resolve, reject) => {
             try {
                 let resp = {}
+                console.log('model data: ', data);
                 let validate = await mysql_helpers.query(DB, `SELECT * FROM tbl_spesifik where code_spesifik = "${data.code_spesifik}"`)
                 console.log('query 1');
                 // return resolve(validate)
