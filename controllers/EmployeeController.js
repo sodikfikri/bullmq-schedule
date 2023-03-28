@@ -68,11 +68,12 @@ const EmployeeController = {
                 apiResult.meta.message = 'No files were uploaded.'
                 return res.status(200).send(apiResult);
             }
-
+            console.log('upload file: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             const uploadedFile = req.files.file;
             const filepath = await LibExcelHandle.UploadFile(uploadedFile)
             let data = LibExcelHandle.ExcelToJson(filepath)
             
+            console.log('insert to tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             let params = {
                 code_spesifik: req.body.code,
                 description: req.body.description,
@@ -87,6 +88,8 @@ const EmployeeController = {
 
                 return res.status(200).json(apiResult)
             } 
+            
+            console.log('start loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             let msisdn = []
             for(val of data) {
                 let Obj = {
@@ -95,7 +98,9 @@ const EmployeeController = {
                 }
                 msisdn.push(Obj)
             }
+            console.log('end loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             // return res.json(msisdn)
+            console.log('start queue: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             const AddJob = await LibQueueMsisdn.QueueHandler(msisdn)
             return res.json(AddJob)
         } catch (error) {

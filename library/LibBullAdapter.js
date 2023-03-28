@@ -17,4 +17,6 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
 QueueHandler.QueueWorker()
 LibQueueMsisdn.QueueWorker()
 
+// LibQueueMsisdn.theQueue.obliterate()
+
 module.exports = serverAdapter

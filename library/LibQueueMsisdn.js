@@ -50,14 +50,14 @@ const LibQueueMsisdn = {
         })
 
         worker.on('progress', (job, result) => {
-            console.log('Event progress');
+            console.log('Event progress: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('completed', (job, result) => {
             job.updateProgress(100);
-            console.log('Event complete');
+            console.log('Event complete: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('failed', (job, result) => {
-            console.log('Event failed');
+            console.log('Event failed: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('error', async (job, result) => {
             console.log('result: ',result);
