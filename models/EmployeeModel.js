@@ -30,12 +30,13 @@ const EmployeeModel = {
             try {
                 let resp = {}
                 let validate = await mysql_helpers.query(DB, `SELECT * FROM tbl_spesifik where code_spesifik = "${data.code_spesifik}"`)
+                console.log('query 1');
                 // return resolve(validate)
                 if (validate.length != 0) {
                     resp.type = 'failed'
                     return resolve(resp)
                 }
-
+                console.log('query 2');
                 const result = await mysql_helpers.insert('tbl_spesifik', data)
 
                 resolve(result)

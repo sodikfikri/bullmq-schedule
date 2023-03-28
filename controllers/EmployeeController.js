@@ -73,13 +73,13 @@ const EmployeeController = {
             const filepath = await LibExcelHandle.UploadFile(uploadedFile)
             let data = LibExcelHandle.ExcelToJson(filepath)
             
-            console.log('insert to tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
+            console.log('set params insert tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             let params = {
                 code_spesifik: req.body.code,
                 description: req.body.description,
                 created_date: moment().format('YYYY-MM-DD HH:mm')
             }
-            
+            console.log('insert to tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             const store = await EmployeeModel.InsSpesifik(params)
             // return res.json(store)
             if (store.type != 'success') {
