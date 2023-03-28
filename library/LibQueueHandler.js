@@ -24,11 +24,11 @@ const QueueHandler = {
                 await QUEUE.add(QueueName, data, {
                     removeOnComplete: false,
                     // delay: 1000 // delay 1 second
-                    repeat: {
-                        pattern: '40 11 07 03 *', // -> set time repeat jobs
-                        // every: 5000, // -> running job setiap 5 detik
-                        // limit: 1 // -> berapakali job mau di jalankan
-                    }
+                    // repeat: {
+                    //     pattern: '40 11 07 03 *', // -> set time repeat jobs
+                    //     // every: 5000, // -> running job setiap 5 detik
+                    //     // limit: 1 // -> berapakali job mau di jalankan
+                    // }
                 })
             }
 
@@ -96,6 +96,7 @@ const QueueHandler = {
         })
         worker.on('error', async (job, result) => {
             console.log('Event Error');
+            console.log(result);
         })
         // worker.on('waiting', (job, result) => {
         //     console.log('Event waiting');

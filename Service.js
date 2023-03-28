@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const multer = require('multer')
-// const formidableMiddleware = require('express-formidable')
+
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
@@ -24,8 +24,6 @@ app.use(
         // type: () => true,
     })
 )
-
-// app.use(formidableMiddleware())
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")

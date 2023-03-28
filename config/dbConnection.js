@@ -1,10 +1,12 @@
 const mysql = require('mysql2')
 const config = require('./dbConfig')
+// console.log('config: ', config.dbConfig);
 const pool = mysql.createPool(config.dbConfig)
 const util = require('util')
 
 pool.getConnection((err, connection) => {
     if (err) {
+        console.log(err);
         if (err.code === "PROTOCOL_CONNECTION_LOST") {
             console.error("Koneksi database ditutup.")
         }
