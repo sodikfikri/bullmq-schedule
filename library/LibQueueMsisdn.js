@@ -53,7 +53,7 @@ const LibQueueMsisdn = {
             console.log('Event progress: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('completed', (job, result) => {
-            job.updateProgress(100);
+            // job.updateProgress(100);
             console.log('Event complete: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('failed', (job, result) => {
