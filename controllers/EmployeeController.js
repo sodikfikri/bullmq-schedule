@@ -74,7 +74,13 @@ const EmployeeController = {
             const filepath = await LibExcelHandle.UploadFile(uploadedFile)
             let data = LibExcelHandle.ExcelToJson(filepath)
             
-            console.log('set params insert tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
+            const jobCek = await EmployeeModel.JobCek()
+            if (jobCek.length != 0) {
+                apiResult = {...response[400]}
+                apiResult.meta.message = 'Ada pekerjaan yang sedang berlangsung'
+                return res.status(200).json(apiResult)
+            }
+            
             let params = {
                 code_spesifik: req.body.code,
                 description: req.body.description,

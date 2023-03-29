@@ -61,6 +61,17 @@ const EmployeeModel = {
         })
     },
 
+    JobCek: function() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await mysql_helpers.query(DB, "SELECT * FROM tbl_msisdn_job where status = 1")
+                resolve(result)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
     testdelete: function(data) {
         return new Promise(async (resolve, reject) => {
             try {
