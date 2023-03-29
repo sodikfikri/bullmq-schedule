@@ -68,7 +68,7 @@ const EmployeeController = {
                 apiResult.meta.message = 'No files were uploaded.'
                 return res.status(200).send(apiResult);
             }
-            console.log('upload file: ', moment().format('YYYY-MM-DD HH:mm:ss'));
+            
             const uploadedFile = req.files.file;
             // return res.json(uploadedFile.name)
             const filepath = await LibExcelHandle.UploadFile(uploadedFile)
@@ -86,8 +86,14 @@ const EmployeeController = {
                 description: req.body.description,
                 created_date: moment().format('YYYY-MM-DD HH:mm')
             }
-            console.log('insert to tbl_spesifik: ', moment().format('YYYY-MM-DD HH:mm:ss'));
+            
             const store = await EmployeeModel.InsSpesifik(params)
+            if (store.type == 'redundance') {
+                apiResult = {...response[400]}
+                apiResult.meta.message = 'Code spesifik has been used'
+
+                return res.status(200).json(apiResult)
+            }
             // return res.json(store)
             if (store.type != 'success') {
                 apiResult = {...response[400]}
@@ -104,7 +110,7 @@ const EmployeeController = {
 
             const addLog = await EmployeeModel.InsLogMsisdn(log_params)
             // return res.json('success')
-            console.log('start loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
+            
             let msisdn = []
             for(val of data) {
                 let Obj = {
@@ -113,9 +119,6 @@ const EmployeeController = {
                 }
                 msisdn.push(Obj)
             }
-            console.log('end loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
-            // return res.json(msisdn)
-            console.log('start queue: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             const AddJob = await LibQueueMsisdn.QueueHandler(uploadedFile.name ,msisdn)
             return res.json(AddJob)
         } catch (error) {

@@ -32,11 +32,9 @@ const EmployeeModel = {
                 console.log('model data: ', data);
                 console.log( `SELECT * FROM tbl_spesifik where code_spesifik = "${data.code_spesifik}"`);
                 let validate = await mysql_helpers.query(DB, `SELECT * FROM tbl_spesifik where code_spesifik = "${data.code_spesifik}"`)
-                console.log('query 1');
-                console.log('validate: ', validate);
                 // return resolve(validate)
                 if (validate.length != 0) {
-                    resp.type = 'failed'
+                    resp.type = 'redundance'
                     return resolve(resp)
                 }
                 console.log('query 2');
