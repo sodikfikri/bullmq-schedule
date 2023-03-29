@@ -77,7 +77,7 @@ const EmployeeController = {
             const jobCek = await EmployeeModel.JobCek()
             if (jobCek.length != 0) {
                 apiResult = {...response[400]}
-                apiResult.meta.message = 'Ada pekerjaan yang sedang berlangsung'
+                apiResult.meta.message = 'There is a job in progress'
                 return res.status(200).json(apiResult)
             }
             
