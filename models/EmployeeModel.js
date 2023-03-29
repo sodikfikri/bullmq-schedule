@@ -47,6 +47,30 @@ const EmployeeModel = {
                 reject(error)
             }
         })
+    },
+
+    InsLogMsisdn: function(data) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await mysql_helpers.insert('tbl_msisdn_job', data)
+
+                resolve(result)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    testdelete: function(data) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = await mysql_helpers.query(DB, `update tbl_msisdn_job set status = 2 where job_name = "${data}"`)
+
+                resolve(result)
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 
 }

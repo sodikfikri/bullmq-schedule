@@ -70,6 +70,7 @@ const EmployeeController = {
             }
             console.log('upload file: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             const uploadedFile = req.files.file;
+            // return res.json(uploadedFile.name)
             const filepath = await LibExcelHandle.UploadFile(uploadedFile)
             let data = LibExcelHandle.ExcelToJson(filepath)
             
@@ -89,6 +90,14 @@ const EmployeeController = {
                 return res.status(200).json(apiResult)
             } 
             
+            let log_params = {
+                job_name: uploadedFile.name,
+                status: 1,
+                created_at: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+
+            const addLog = await EmployeeModel.InsLogMsisdn(log_params)
+            // return res.json('success')
             console.log('start loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             let msisdn = []
             for(val of data) {
@@ -101,7 +110,7 @@ const EmployeeController = {
             console.log('end loop: ', moment().format('YYYY-MM-DD HH:mm:ss'));
             // return res.json(msisdn)
             console.log('start queue: ', moment().format('YYYY-MM-DD HH:mm:ss'));
-            const AddJob = await LibQueueMsisdn.QueueHandler(msisdn)
+            const AddJob = await LibQueueMsisdn.QueueHandler(uploadedFile.name ,msisdn)
             return res.json(AddJob)
         } catch (error) {
             apiResult = {...response[500]}
@@ -113,12 +122,12 @@ const EmployeeController = {
     Drain: async function(req, res) {
         let apiResult = {}
         try {
-            LibQueueHandler.QueueDrain()
+            
+            let data = req.body.data
+            
+            let del = await EmployeeModel.testdelete(data)
 
-            apiResult = {...response[200]}
-            apiResult.meta.message = 'Success Drain'
-
-            return res.json(apiResult)
+            return res.json(del)
         } catch (error) {
             apiResult = {...response[500]}
             apiResult.meta.message = error.message

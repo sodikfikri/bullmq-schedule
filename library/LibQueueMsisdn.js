@@ -6,15 +6,18 @@ const connection = require('./LibRedisConn')
 
 const QueueName = process.env.QUEUEMSISDN
 
+let filename = ''
+
 const QUEUE = new Queue(QueueName,  {
     connection: connection
 })
 
 const LibQueueMsisdn = {
     theQueue: QUEUE,
-    QueueHandler: async function(data) {
+    QueueHandler: async function(fnme ,data) {
         let apiResult = {}
         try {
+            filename = fnme
             if (data) {
                 await QUEUE.add(QueueName, data, {
                     removeOnComplete: true
@@ -52,8 +55,8 @@ const LibQueueMsisdn = {
         worker.on('progress', (job, result) => {
             console.log('Event progress: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
-        worker.on('completed', (job, result) => {
-            // job.updateProgress(100);
+        worker.on('completed', async (job, result) => {
+            let updatelog = await mysql_helpers.query(DB, `update tbl_msisdn_job set status = 2 where job_name = "${filename}"`)
             console.log('Event complete: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('failed', (job, result) => {
