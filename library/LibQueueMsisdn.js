@@ -59,7 +59,8 @@ const LibQueueMsisdn = {
             let updatelog = await mysql_helpers.query(DB, `update tbl_msisdn_job set status = 2 where job_name = "${filename}"`)
             console.log('Event complete: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
-        worker.on('failed', (job, result) => {
+        worker.on('failed', async (job, result) => {
+            let updatelog = await mysql_helpers.query(DB, `update tbl_msisdn_job set status = 3 where job_name = "${filename}"`)
             console.log('Event failed: ', moment().format('YYYY-MM-DD HH:mm:ss'));
         })
         worker.on('error', async (job, result) => {
